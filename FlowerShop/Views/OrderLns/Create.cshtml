@@ -1,4 +1,4 @@
-@model FlowerShop.Models.Customer
+@model FlowerShop.Models.OrderLn
 
 @{
     ViewData["Title"] = "Create";
@@ -8,28 +8,26 @@
 
 <form asp-action="Create">
     <div class="form-horizontal">
-        <h4>Customer</h4>
+        <h4>OrderLn</h4>
         <hr />
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group">
-            <label asp-for="Customer_Name" class="col-md-2 control-label"></label>
+            <label asp-for="Number" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="Customer_Name" class="form-control" />
-                <span asp-validation-for="Customer_Name" class="text-danger"></span>
+                <input asp-for="Number" class="form-control" />
+                <span asp-validation-for="Number" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="Password" class="col-md-2 control-label"></label>
+            <label asp-for="ProductId" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="Password" class="form-control" />
-                <span asp-validation-for="Password" class="text-danger"></span>
+                <select asp-for="ProductId" class ="form-control" asp-items="ViewBag.ProductId"></select>
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="Address" class="col-md-2 control-label"></label>
+            <label asp-for="OrderId" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="Address" class="form-control" />
-                <span asp-validation-for="Address" class="text-danger"></span>
+                <select asp-for="OrderId" class ="form-control" asp-items="ViewBag.OrderId"></select>
             </div>
         </div>
         <div class="form-group">

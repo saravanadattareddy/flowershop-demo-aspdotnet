@@ -7,11 +7,11 @@ namespace FlowerShop.Models
 {
     public class Customer
     {
-        public int CustomerID { get; set; }
-        public string LastName { get; set; }
-        public string FirstMidName { get; set; }
-        public DateTime RegistrationDate { get; set; }
-
+        public int CustomerId { get; set; }
+        public string Customer_Name { get; set; }
+        public string Password { get; set; }
+        public string Address { get; set; }
+  
         public ICollection<Order> Orders { get; set; }
     }
 }

@@ -22,7 +22,7 @@ namespace FlowerShop.Controllers
         // GET: Orders
         public async Task<IActionResult> Index()
         {
-            var generalContext = _context.Orders.Include(o => o.Customer).Include(o => o.Flower);
+            var generalContext = _context.Orders.Include(o => o.Customer);
             return View(await generalContext.ToListAsync());
         }
 
@@ -36,8 +36,7 @@ namespace FlowerShop.Controllers
 
             var order = await _context.Orders
                 .Include(o => o.Customer)
-                .Include(o => o.Flower)
-                .SingleOrDefaultAsync(m => m.OrderID == id);
+                .SingleOrDefaultAsync(m => m.OrderId == id);
             if (order == null)
             {
                 return NotFound();
@@ -49,8 +48,7 @@ namespace FlowerShop.Controllers
         // GET: Orders/Create
         public IActionResult Create()
         {
-            ViewData["CustomerID"] = new SelectList(_context.Customers, "CustomerID", "CustomerID");
-            ViewData["FlowerID"] = new SelectList(_context.Flowers, "FlowerID", "FlowerID");
+            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "CustomerId");
             return View();
         }
 
@@ -59,7 +57,7 @@ namespace FlowerShop.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("OrderID,CustomerID,FlowerID")] Order order)
+        public async Task<IActionResult> Create([Bind("OrderId,CustomerId,Order_Date")] Order order)
         {
             if (ModelState.IsValid)
             {
@@ -67,8 +65,7 @@ namespace FlowerShop.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            ViewData["CustomerID"] = new SelectList(_context.Customers, "CustomerID", "CustomerID", order.CustomerID);
-            ViewData["FlowerID"] = new SelectList(_context.Flowers, "FlowerID", "FlowerID", order.FlowerID);
+            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "CustomerId", order.CustomerId);
             return View(order);
         }
 
@@ -80,13 +77,12 @@ namespace FlowerShop.Controllers
                 return NotFound();
             }
 
-            var order = await _context.Orders.SingleOrDefaultAsync(m => m.OrderID == id);
+            var order = await _context.Orders.SingleOrDefaultAsync(m => m.OrderId == id);
             if (order == null)
             {
                 return NotFound();
             }
-            ViewData["CustomerID"] = new SelectList(_context.Customers, "CustomerID", "CustomerID", order.CustomerID);
-            ViewData["FlowerID"] = new SelectList(_context.Flowers, "FlowerID", "FlowerID", order.FlowerID);
+            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "CustomerId", order.CustomerId);
             return View(order);
         }
 
@@ -95,9 +91,9 @@ namespace FlowerShop.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("OrderID,CustomerID,FlowerID")] Order order)
+        public async Task<IActionResult> Edit(int id, [Bind("OrderId,CustomerId,Order_Date")] Order order)
         {
-            if (id != order.OrderID)
+            if (id != order.OrderId)
             {
                 return NotFound();
             }
@@ -111,7 +107,7 @@ namespace FlowerShop.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!OrderExists(order.OrderID))
+                    if (!OrderExists(order.OrderId))
                     {
                         return NotFound();
                     }
@@ -122,8 +118,7 @@ namespace FlowerShop.Controllers
                 }
                 return RedirectToAction("Index");
             }
-            ViewData["CustomerID"] = new SelectList(_context.Customers, "CustomerID", "CustomerID", order.CustomerID);
-            ViewData["FlowerID"] = new SelectList(_context.Flowers, "FlowerID", "FlowerID", order.FlowerID);
+            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "CustomerId", order.CustomerId);
             return View(order);
         }
 
@@ -137,8 +132,7 @@ namespace FlowerShop.Controllers
 
             var order = await _context.Orders
                 .Include(o => o.Customer)
-                .Include(o => o.Flower)
-                .SingleOrDefaultAsync(m => m.OrderID == id);
+                .SingleOrDefaultAsync(m => m.OrderId == id);
             if (order == null)
             {
                 return NotFound();
@@ -152,7 +146,7 @@ namespace FlowerShop.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var order = await _context.Orders.SingleOrDefaultAsync(m => m.OrderID == id);
+            var order = await _context.Orders.SingleOrDefaultAsync(m => m.OrderId == id);
             _context.Orders.Remove(order);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
@@ -160,7 +154,7 @@ namespace FlowerShop.Controllers
 
         private bool OrderExists(int id)
         {
-            return _context.Orders.Any(e => e.OrderID == id);
+            return _context.Orders.Any(e => e.OrderId == id);
         }
     }
 }
