@@ -10,22 +10,22 @@ using FlowerShop.Models;
 
 namespace FlowerShop.Controllers
 {
-    public class CustomersController : Controller
+    public class ProductsController : Controller
     {
         private readonly GeneralContext _context;
 
-        public CustomersController(GeneralContext context)
+        public ProductsController(GeneralContext context)
         {
             _context = context;    
         }
 
-        // GET: Customers
+        // GET: Products
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Customers.ToListAsync());
+            return View(await _context.Products.ToListAsync());
         }
 
-        // GET: Customers/Details/5
+        // GET: Products/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,39 +33,39 @@ namespace FlowerShop.Controllers
                 return NotFound();
             }
 
-            var customer = await _context.Customers
-                .SingleOrDefaultAsync(m => m.CustomerId == id);
-            if (customer == null)
+            var product = await _context.Products
+                .SingleOrDefaultAsync(m => m.ProductId == id);
+            if (product == null)
             {
                 return NotFound();
             }
 
-            return View(customer);
+            return View(product);
         }
 
-        // GET: Customers/Create
+        // GET: Products/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Customers/Create
+        // POST: Products/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CustomerId,Customer_Name,Password,Address")] Customer customer)
+        public async Task<IActionResult> Create([Bind("ProductId,Product_Name,Unit_Price")] Product product)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(customer);
+                _context.Add(product);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            return View(customer);
+            return View(product);
         }
 
-        // GET: Customers/Edit/5
+        // GET: Products/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,22 +73,22 @@ namespace FlowerShop.Controllers
                 return NotFound();
             }
 
-            var customer = await _context.Customers.SingleOrDefaultAsync(m => m.CustomerId == id);
-            if (customer == null)
+            var product = await _context.Products.SingleOrDefaultAsync(m => m.ProductId == id);
+            if (product == null)
             {
                 return NotFound();
             }
-            return View(customer);
+            return View(product);
         }
 
-        // POST: Customers/Edit/5
+        // POST: Products/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CustomerId,Customer_Name,Password,Address")] Customer customer)
+        public async Task<IActionResult> Edit(int id, [Bind("ProductId,Product_Name,Unit_Price")] Product product)
         {
-            if (id != customer.CustomerId)
+            if (id != product.ProductId)
             {
                 return NotFound();
             }
@@ -97,12 +97,12 @@ namespace FlowerShop.Controllers
             {
                 try
                 {
-                    _context.Update(customer);
+                    _context.Update(product);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CustomerExists(customer.CustomerId))
+                    if (!ProductExists(product.ProductId))
                     {
                         return NotFound();
                     }
@@ -113,10 +113,10 @@ namespace FlowerShop.Controllers
                 }
                 return RedirectToAction("Index");
             }
-            return View(customer);
+            return View(product);
         }
 
-        // GET: Customers/Delete/5
+        // GET: Products/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,30 +124,30 @@ namespace FlowerShop.Controllers
                 return NotFound();
             }
 
-            var customer = await _context.Customers
-                .SingleOrDefaultAsync(m => m.CustomerId == id);
-            if (customer == null)
+            var product = await _context.Products
+                .SingleOrDefaultAsync(m => m.ProductId == id);
+            if (product == null)
             {
                 return NotFound();
             }
 
-            return View(customer);
+            return View(product);
         }
 
-        // POST: Customers/Delete/5
+        // POST: Products/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var customer = await _context.Customers.SingleOrDefaultAsync(m => m.CustomerId == id);
-            _context.Customers.Remove(customer);
+            var product = await _context.Products.SingleOrDefaultAsync(m => m.ProductId == id);
+            _context.Products.Remove(product);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
-        private bool CustomerExists(int id)
+        private bool ProductExists(int id)
         {
-            return _context.Customers.Any(e => e.CustomerId == id);
+            return _context.Products.Any(e => e.ProductId == id);
         }
     }
 }

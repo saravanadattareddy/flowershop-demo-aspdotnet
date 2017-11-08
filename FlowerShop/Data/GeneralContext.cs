@@ -12,7 +12,11 @@ namespace FlowerShop.Data
         public GeneralContext(DbContextOptions<GeneralContext> options) : base(options) { }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Order> Orders { get; set; }
-        public DbSet<Flower> Flowers { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<OrderLn> OrderLns { get; set; }
 
+        public DbSet<Occasion> Occassions { get; set; }
+
+        public DbSet<Usage> Usages { get; set; }
     }
 }

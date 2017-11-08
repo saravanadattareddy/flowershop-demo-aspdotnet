@@ -11,18 +11,18 @@
     <h4>Order</h4>
     <hr />
     <dl class="dl-horizontal">
-        <input type="hidden" asp-for="OrderID" />
+        <input type="hidden" asp-for="OrderId" />
+        <dt>
+            @Html.DisplayNameFor(model => model.Order_Date)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Order_Date)
+        </dd>
         <dt>
             @Html.DisplayNameFor(model => model.Customer)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Customer.CustomerID)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Flower)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Flower.FlowerID)
+            @Html.DisplayFor(model => model.Customer.CustomerId)
         </dd>
     </dl>
     

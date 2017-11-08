@@ -1,4 +1,4 @@
-@model FlowerShop.Models.Customer
+@model FlowerShop.Models.Occasion
 
 @{
     ViewData["Title"] = "Delete";
@@ -8,27 +8,21 @@
 
 <h3>Are you sure you want to delete this?</h3>
 <div>
-    <h4>Customer</h4>
+    <h4>Occasion</h4>
     <hr />
     <dl class="dl-horizontal">
-        <input type="hidden" asp-for="CustomerId" />
+        <input type="hidden" asp-for="OccasionId" />
         <dt>
-            @Html.DisplayNameFor(model => model.Customer_Name)
+            @Html.DisplayNameFor(model => model.Occasion_Name)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Customer_Name)
+            @Html.DisplayFor(model => model.Occasion_Name)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Password)
+            @Html.DisplayNameFor(model => model.Description)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Password)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.Address)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.Address)
+            @Html.DisplayFor(model => model.Description)
         </dd>
     </dl>
     

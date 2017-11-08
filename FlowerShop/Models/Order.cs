@@ -7,15 +7,13 @@ namespace FlowerShop.Models
 {
     public class Order
     {
-        public int OrderID { get; set; }
+        public int OrderId { get; set; }
 
-        public int CustomerID { get; set; }
+        public int CustomerId { get; set; }
         public Customer Customer { get; set; }
 
 
-        public int FlowerID { get; set; }
-        public Flower Flower { get; set; }
-
+        public DateTime Order_Date { get; set; }
 
 
     }
