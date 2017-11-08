@@ -10,23 +10,22 @@ using FlowerShop.Models;
 
 namespace FlowerShop.Controllers
 {
-    public class OrdersController : Controller
+    public class OccasionsController : Controller
     {
         private readonly GeneralContext _context;
 
-        public OrdersController(GeneralContext context)
+        public OccasionsController(GeneralContext context)
         {
             _context = context;    
         }
 
-        // GET: Orders
+        // GET: Occasions
         public async Task<IActionResult> Index()
         {
-            var generalContext = _context.Orders.Include(o => o.Customer);
-            return View(await generalContext.ToListAsync());
+            return View(await _context.Occassions.ToListAsync());
         }
 
-        // GET: Orders/Details/5
+        // GET: Occasions/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,42 +33,39 @@ namespace FlowerShop.Controllers
                 return NotFound();
             }
 
-            var order = await _context.Orders
-                .Include(o => o.Customer)
-                .SingleOrDefaultAsync(m => m.OrderId == id);
-            if (order == null)
+            var occasion = await _context.Occassions
+                .SingleOrDefaultAsync(m => m.OccasionId == id);
+            if (occasion == null)
             {
                 return NotFound();
             }
 
-            return View(order);
+            return View(occasion);
         }
 
-        // GET: Orders/Create
+        // GET: Occasions/Create
         public IActionResult Create()
         {
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "Customer_Name");
             return View();
         }
 
-        // POST: Orders/Create
+        // POST: Occasions/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("OrderId,CustomerId,Order_Date")] Order order)
+        public async Task<IActionResult> Create([Bind("OccasionId,Occasion_Name,Description")] Occasion occasion)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(order);
+                _context.Add(occasion);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "Customer_Name", order.CustomerId);
-            return View(order);
+            return View(occasion);
         }
 
-        // GET: Orders/Edit/5
+        // GET: Occasions/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -77,23 +73,22 @@ namespace FlowerShop.Controllers
                 return NotFound();
             }
 
-            var order = await _context.Orders.SingleOrDefaultAsync(m => m.OrderId == id);
-            if (order == null)
+            var occasion = await _context.Occassions.SingleOrDefaultAsync(m => m.OccasionId == id);
+            if (occasion == null)
             {
                 return NotFound();
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "Customer_Name", order.CustomerId);
-            return View(order);
+            return View(occasion);
         }
 
-        // POST: Orders/Edit/5
+        // POST: Occasions/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("OrderId,CustomerId,Order_Date")] Order order)
+        public async Task<IActionResult> Edit(int id, [Bind("OccasionId,Occasion_Name,Description")] Occasion occasion)
         {
-            if (id != order.OrderId)
+            if (id != occasion.OccasionId)
             {
                 return NotFound();
             }
@@ -102,12 +97,12 @@ namespace FlowerShop.Controllers
             {
                 try
                 {
-                    _context.Update(order);
+                    _context.Update(occasion);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!OrderExists(order.OrderId))
+                    if (!OccasionExists(occasion.OccasionId))
                     {
                         return NotFound();
                     }
@@ -118,11 +113,10 @@ namespace FlowerShop.Controllers
                 }
                 return RedirectToAction("Index");
             }
-            ViewData["CustomerId"] = new SelectList(_context.Customers, "CustomerId", "Customer_Name", order.CustomerId);
-            return View(order);
+            return View(occasion);
         }
 
-        // GET: Orders/Delete/5
+        // GET: Occasions/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -130,31 +124,30 @@ namespace FlowerShop.Controllers
                 return NotFound();
             }
 
-            var order = await _context.Orders
-                .Include(o => o.Customer)
-                .SingleOrDefaultAsync(m => m.OrderId == id);
-            if (order == null)
+            var occasion = await _context.Occassions
+                .SingleOrDefaultAsync(m => m.OccasionId == id);
+            if (occasion == null)
             {
                 return NotFound();
             }
 
-            return View(order);
+            return View(occasion);
         }
 
-        // POST: Orders/Delete/5
+        // POST: Occasions/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var order = await _context.Orders.SingleOrDefaultAsync(m => m.OrderId == id);
-            _context.Orders.Remove(order);
+            var occasion = await _context.Occassions.SingleOrDefaultAsync(m => m.OccasionId == id);
+            _context.Occassions.Remove(occasion);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
-        private bool OrderExists(int id)
+        private bool OccasionExists(int id)
         {
-            return _context.Orders.Any(e => e.OrderId == id);
+            return _context.Occassions.Any(e => e.OccasionId == id);
         }
     }
 }

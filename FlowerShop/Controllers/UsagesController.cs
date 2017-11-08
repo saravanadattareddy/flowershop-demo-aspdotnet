@@ -10,23 +10,23 @@ using FlowerShop.Models;
 
 namespace FlowerShop.Controllers
 {
-    public class OrderLnsController : Controller
+    public class UsagesController : Controller
     {
         private readonly GeneralContext _context;
 
-        public OrderLnsController(GeneralContext context)
+        public UsagesController(GeneralContext context)
         {
             _context = context;    
         }
 
-        // GET: OrderLns
+        // GET: Usages
         public async Task<IActionResult> Index()
         {
-            var generalContext = _context.OrderLns.Include(o => o.Order).Include(o => o.Product);
+            var generalContext = _context.Usages.Include(u => u.Occassion).Include(u => u.Product);
             return View(await generalContext.ToListAsync());
         }
 
-        // GET: OrderLns/Details/5
+        // GET: Usages/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,45 +34,45 @@ namespace FlowerShop.Controllers
                 return NotFound();
             }
 
-            var orderLn = await _context.OrderLns
-                .Include(o => o.Order)
-                .Include(o => o.Product)
-                .SingleOrDefaultAsync(m => m.OrderLnId == id);
-            if (orderLn == null)
+            var usage = await _context.Usages
+                .Include(u => u.Occassion)
+                .Include(u => u.Product)
+                .SingleOrDefaultAsync(m => m.UsageId == id);
+            if (usage == null)
             {
                 return NotFound();
             }
 
-            return View(orderLn);
+            return View(usage);
         }
 
-        // GET: OrderLns/Create
+        // GET: Usages/Create
         public IActionResult Create()
         {
-            ViewData["OrderId"] = new SelectList(_context.Orders, "OrderId", "Order_Date");
+            ViewData["OccasionId"] = new SelectList(_context.Occassions, "OccasionId", "Occasion_Name");
             ViewData["ProductId"] = new SelectList(_context.Products, "ProductId", "Product_Name");
             return View();
         }
 
-        // POST: OrderLns/Create
+        // POST: Usages/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("OrderLnId,Number,ProductId,OrderId")] OrderLn orderLn)
+        public async Task<IActionResult> Create([Bind("UsageId,OccasionId,ProductId")] Usage usage)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(orderLn);
+                _context.Add(usage);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
             }
-            ViewData["OrderId"] = new SelectList(_context.Orders, "OrderId", "Order_Date", orderLn.OrderId);
-            ViewData["ProductId"] = new SelectList(_context.Products, "ProductId", "Product_Name", orderLn.ProductId);
-            return View(orderLn);
+            ViewData["OccasionId"] = new SelectList(_context.Occassions, "OccasionId", "Occasion_Name", usage.OccasionId);
+            ViewData["ProductId"] = new SelectList(_context.Products, "ProductId", "Product_Name", usage.ProductId);
+            return View(usage);
         }
 
-        // GET: OrderLns/Edit/5
+        // GET: Usages/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -80,24 +80,24 @@ namespace FlowerShop.Controllers
                 return NotFound();
             }
 
-            var orderLn = await _context.OrderLns.SingleOrDefaultAsync(m => m.OrderLnId == id);
-            if (orderLn == null)
+            var usage = await _context.Usages.SingleOrDefaultAsync(m => m.UsageId == id);
+            if (usage == null)
             {
                 return NotFound();
             }
-            ViewData["OrderId"] = new SelectList(_context.Orders, "OrderId", "Order_Date", orderLn.OrderId);
-            ViewData["ProductId"] = new SelectList(_context.Products, "ProductId", "Product_Name", orderLn.ProductId);
-            return View(orderLn);
+            ViewData["OccasionId"] = new SelectList(_context.Occassions, "OccasionId", "Occasion_Name", usage.OccasionId);
+            ViewData["ProductId"] = new SelectList(_context.Products, "ProductId", "Product_Name", usage.ProductId);
+            return View(usage);
         }
 
-        // POST: OrderLns/Edit/5
+        // POST: Usages/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("OrderLnId,Number,ProductId,OrderId")] OrderLn orderLn)
+        public async Task<IActionResult> Edit(int id, [Bind("UsageId,OccasionId,ProductId")] Usage usage)
         {
-            if (id != orderLn.OrderLnId)
+            if (id != usage.UsageId)
             {
                 return NotFound();
             }
@@ -106,12 +106,12 @@ namespace FlowerShop.Controllers
             {
                 try
                 {
-                    _context.Update(orderLn);
+                    _context.Update(usage);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!OrderLnExists(orderLn.OrderLnId))
+                    if (!UsageExists(usage.UsageId))
                     {
                         return NotFound();
                     }
@@ -122,12 +122,12 @@ namespace FlowerShop.Controllers
                 }
                 return RedirectToAction("Index");
             }
-            ViewData["OrderId"] = new SelectList(_context.Orders, "OrderId", "Order_Date", orderLn.OrderId);
-            ViewData["ProductId"] = new SelectList(_context.Products, "ProductId", "Product_Name", orderLn.ProductId);
-            return View(orderLn);
+            ViewData["OccasionId"] = new SelectList(_context.Occassions, "OccasionId", "Occasion_Name", usage.OccasionId);
+            ViewData["ProductId"] = new SelectList(_context.Products, "ProductId", "Product_Name", usage.ProductId);
+            return View(usage);
         }
 
-        // GET: OrderLns/Delete/5
+        // GET: Usages/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -135,32 +135,32 @@ namespace FlowerShop.Controllers
                 return NotFound();
             }
 
-            var orderLn = await _context.OrderLns
-                .Include(o => o.Order)
-                .Include(o => o.Product)
-                .SingleOrDefaultAsync(m => m.OrderLnId == id);
-            if (orderLn == null)
+            var usage = await _context.Usages
+                .Include(u => u.Occassion)
+                .Include(u => u.Product)
+                .SingleOrDefaultAsync(m => m.UsageId == id);
+            if (usage == null)
             {
                 return NotFound();
             }
 
-            return View(orderLn);
+            return View(usage);
         }
 
-        // POST: OrderLns/Delete/5
+        // POST: Usages/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var orderLn = await _context.OrderLns.SingleOrDefaultAsync(m => m.OrderLnId == id);
-            _context.OrderLns.Remove(orderLn);
+            var usage = await _context.Usages.SingleOrDefaultAsync(m => m.UsageId == id);
+            _context.Usages.Remove(usage);
             await _context.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 
-        private bool OrderLnExists(int id)
+        private bool UsageExists(int id)
         {
-            return _context.OrderLns.Any(e => e.OrderLnId == id);
+            return _context.Usages.Any(e => e.UsageId == id);
         }
     }
 }
