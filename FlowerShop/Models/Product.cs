@@ -13,6 +13,5 @@ namespace FlowerShop.Models
 
         public int Unit_Price { get; set; }
 
-        public byte[] Image { get; set; }
     }
 }
