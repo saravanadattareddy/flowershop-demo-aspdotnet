@@ -12,7 +12,7 @@ stages:
     pool:
       vmImage: 'windows-latest'
     variables:
-      solution: '**/*.sin'
+      solution: 'solution'
       buildPlatform: 'Any CPU'
       buildConfiguration: 'Release' 
     steps:
@@ -22,7 +22,7 @@ stages:
     - task: NuGetCommand@2
       inputs:
         command: 'restore'
-        restoreSolution: '**/*.sln'
+        restoreSolution: 'solution'
         feedsToUse: 'select'
       
 
