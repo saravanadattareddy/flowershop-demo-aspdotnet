@@ -1,0 +1,58 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+trigger: 
+- main
+
+stages:
+- stage: Build
+  jobs:
+  - job: Build
+    pool:
+      vmImage: 'vs2017-win2016'
+    variables:
+      solution: '**/*.sin'
+      buildPlatform: 'Any CPU'
+      buildConfiguration: 'Release' 
+    steps:
+    - task: NuGetToolInstaller@1
+      inputs:
+       versionSpec: 
+     
+    - task: NuGetCommand@2
+      inputs:
+        command: 'restore'
+        restoreSolution: '**/*.sln'
+      
+
+    - task: VSBuild@1
+      displayName: 'Build solution FlowerShop.sln'
+      inputs:
+              solution: '$(Parameters.solution)'
+              msbuildArgs: '/p:DeployOnBuild=true /p:DeployDefaultTarget=WebPublish /p:WebPublishMethod=FileSystem /p:publishUrl="$(Agent.TempDirectory)\WebAppContent\\"'
+              platform: '$(BuildPlatform)'
+              configuration: '$(BuildConfiguration)'   
+    - task: VSTest@2
+      inputs:
+            platform: '$(BuildPlatform)'
+            configuration: '$(BuildConfiguration)'    
+                 
+- stage: Release
+  jobs:
+  - job: Release
+
+    steps:
+    - task: DownloadBuildArtifacts@1
+      inputs:
+        buildType: 'current'
+        downloadType: 'single'
+        artifactName: 'copy artifacts to release directory'
+        downloadPath: '$(System.ArtifactsDirectory)'
+    - task: AzureWebApp@1
+      inputs:
+        azureSubscription: 'Free Trial(3b887913-f2ee-4aed-83fe-fdc1cf2b0280)'
+        appType: 'webApp'
+        appName: 'day-dri'
+        package: '$(System.DefaultWorkingDirectory)'
+        deploymentMethod: 'auto'
