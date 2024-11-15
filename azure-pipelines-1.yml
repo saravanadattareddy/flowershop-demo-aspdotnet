@@ -10,7 +10,7 @@ stages:
   jobs:
   - job: Build
     pool:
-      vmImage: 'vs2019-win2019'
+      vmImage: 'ubuntu-latest'
     variables:
       solution: '**/*.sin'
       buildPlatform: 'Any CPU'
