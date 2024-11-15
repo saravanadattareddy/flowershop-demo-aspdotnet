@@ -17,19 +17,18 @@ stages:
       buildConfiguration: 'Release' 
     steps:
     - task: NuGetToolInstaller@1
-      inputs:
-       versionSpec: 
+     
      
     - task: NuGetCommand@2
       inputs:
         command: 'restore'
-        restoreSolution: '**/*.sln'
+        restoreSolution: '(solution)'
       
 
     - task: VSBuild@1
-      displayName: 'Build solution FlowerShop.sln'
+   
       inputs:
-              solution: '$(Parameters.solution)'
+              solution: '$(solution)'
               msbuildArgs: '/p:DeployOnBuild=true /p:DeployDefaultTarget=WebPublish /p:WebPublishMethod=FileSystem /p:publishUrl="$(Agent.TempDirectory)\WebAppContent\\"'
               platform: '$(BuildPlatform)'
               configuration: '$(BuildConfiguration)'   
