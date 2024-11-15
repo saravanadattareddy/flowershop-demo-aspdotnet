@@ -1,0 +1,72 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- master
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  solution: '**/*.sin'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+
+stages:
+  - stage: Build
+    jobs:
+    - job: Build
+    
+steps:
+- task: NuGetToolInstaller@0
+  displayName: 'Use NuGet 4.4.1'
+  inputs:
+    versionSpec: 4.4.1
+variables:
+  solution: 'FlowerShop.sln'
+
+steps:
+- task: NuGetCommand@2
+  displayName: 'NuGet restore'
+  inputs:
+    restoreSolution: '$(Parameters.solution)'
+#Your build pipeline references an undefined variable named ‘BuildPlatform’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
+#Your build pipeline references an undefined variable named ‘BuildConfiguration’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
+variables:
+  solution: 'FlowerShop.sln'
+
+steps:
+- task: VSBuild@1
+  displayName: 'Build solution FlowerShop.sln'
+  inputs:
+    solution: '$(Parameters.solution)'
+    msbuildArgs: '/p:DeployOnBuild=true /p:DeployDefaultTarget=WebPublish /p:WebPublishMethod=FileSystem /p:publishUrl="$(Agent.TempDirectory)\WebAppContent\\"'
+    platform: '$(BuildPlatform)'
+    configuration: '$(BuildConfiguration)'
+- stage: Release
+  displayName: Release
+  jobs:
+  - deployment:
+    displayName: Release
+
+    environment: Release
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+           
+          - task: DownloadBuildArtifacts@1
+            inputs:
+              buildType: 'current'
+              downloadType: 'single'
+              artifactName: 'copy artifacts to release directory'
+              downloadPath: '$(System.ArtifactsDirectory)'
+          - task: AzureWebApp@1
+            inputs:
+              azureSubscription: 'Free Trial(3b887913-f2ee-4aed-83fe-fdc1cf2b0280)'
+              appType: 'webApp'
+              appName: 'day-dri'
+              package: '$(System.DefaultWorkingDirectory)'
+              deploymentMethod: 'auto'
