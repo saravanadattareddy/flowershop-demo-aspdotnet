@@ -18,12 +18,12 @@ stages:
         - task: NuGetCommand@2
           inputs:
             command: 'restore'
-            restoreSolution: '**/*.sln'
+            restoreSolution: '$(Parameters.solution)'
             feedsToUse: 'select'
 
         - task: VSBuild@1
           inputs:
-            solution: '**\*.sln'
+            solution: '$(Parameters.solution)'
             msbuildArgs: '/p:DeployOnBuild=true /p:DeployDefaultTarget=WebPublish /p:WebPublishMethod=FileSystem /p:publishUrl="$(Agent.TempDirectory)\WebAppContent\\"'
             platform: '$(BuildPlatform)'
             configuration: '$(BuildConfiguration)'
