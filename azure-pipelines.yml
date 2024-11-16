@@ -24,7 +24,7 @@ stages:
         - task: VSBuild@1
           inputs:
             solution: '$(Parameters.solution)'
-            msbuildArgs: '/p:DeployOnBuild=true /p:DeployDefaultTarget=WebPublish /p:WebPublishMethod=FileSystem /p:publishUrl="$(Agent.TempDirectory)\WebAppContent\\"'
+            msbuildArgs: '''/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactstagingdirectory)\\"'''
             platform: '$(BuildPlatform)'
             configuration: '$(BuildConfiguration)'
         - task: VSTest@3
